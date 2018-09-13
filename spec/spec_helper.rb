@@ -5,13 +5,13 @@ require 'htmltoword'
 include Htmltoword::XSLTHelper
 include Htmltoword::TemplatesHelper
 
-def compare_transformed_files(test, test_file_name, extras: false)
+def compare_transformed_files(test, test_file_name, extras= false)
   source = File.read(fixture_path(test, test_file_name, :html))
   expected_content = File.read(fixture_path(test, test_file_name, :xml))
   compare_resulting_wordml_with_expected(source, expected_content, extras: extras)
 end
 
-def compare_resulting_wordml_with_expected(html, resulting_wordml, extras: false)
+def compare_resulting_wordml_with_expected(html, resulting_wordml, extras = false)
   source = Nokogiri::HTML(html.gsub(/>\s+</, '><'))
   result = Htmltoword::Document.new(template_file(nil)).transform_doc_xml(source, extras)
   result.gsub!(/\s*<!--(.*?)-->\s*/m, '')
